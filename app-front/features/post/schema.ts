@@ -1,11 +1,5 @@
 import { z } from "zod";
-
-// TODO: fix
-export const userBaseSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  iconImageUrl: z.string().url(),
-});
+import { userBaseSchema } from "../user/schema";
 
 export const postSchema = z.object({
   id: z.string().uuid(),

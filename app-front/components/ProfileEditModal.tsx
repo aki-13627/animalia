@@ -16,13 +16,10 @@ import {
 import { Colors } from "@/constants/Colors";
 import * as ImagePicker from "expo-image-picker";
 import { useMutation } from "@tanstack/react-query";
-import Constants from "expo-constants";
 import { z } from "zod";
-import { User } from "@/features/user/schema";
 import { fetchApi } from "@/utils/api";
 import { useAuth } from "@/providers/AuthContext";
-
-const API_URL = Constants.expoConfig?.extra?.API_URL;
+import { User } from "@/features/auth/schema";
 
 export const profileEditSchema = z.object({
   imageUri: z.string().nullable(),

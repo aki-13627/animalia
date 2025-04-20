@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useColorScheme } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { User } from "@/features/user/schema";
+import { User } from "@/features/auth/schema";
 
 type ProfileHeaderProps = {
   user: User;
@@ -16,7 +16,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
   const styles = getStyles(colors);
-  const backgroundColor = colorScheme == "light" ? "white" : "black";
+  const backgroundColor = colorScheme === "light" ? "white" : "black";
 
   return (
     <View style={[styles.headerContainer, { backgroundColor }]}>

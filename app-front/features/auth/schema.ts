@@ -1,5 +1,16 @@
 import { z } from "zod";
-import { userSchema } from "../user/schema";
+import { postSchema } from "../post/schema";
+import { petSchema } from "../pet/schema";
+import { userBaseSchema } from "../user/schema";
+
+export const userSchema = userBaseSchema.extend({
+  email: z.string().email(),
+  bio: z.string().min(0),
+  posts: z.array(postSchema),
+  pets: z.array(petSchema),
+});
+
+export type User = z.infer<typeof userSchema>;
 
 export const loginFormSchema = z.object({
   email: z
@@ -27,6 +38,7 @@ export const signUpResponseSchema = z.object({
 
 export type SignUpResponse = z.infer<typeof signUpResponseSchema>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const signUpFormSchema = z.object({
   name: z.string(),
   email: z

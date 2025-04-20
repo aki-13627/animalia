@@ -2,11 +2,12 @@ import React, { createContext, useContext, ReactNode } from "react";
 import * as SecureStore from "expo-secure-store";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchApi } from "@/utils/api";
-import { User, userSchema } from "@/features/user/schema";
 import {
   LoginForm,
   LoginResponse,
   loginResponseSchema,
+  User,
+  userSchema,
 } from "@/features/auth/schema";
 import { z } from "zod";
 

@@ -23,13 +23,10 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthContext";
-import Constants from "expo-constants";
 import { PetForm, petInputSchema } from "./PetRegisterModal";
 import { Pet } from "@/features/pet/schema";
 import { fetchApi } from "@/utils/api";
 import { z } from "zod";
-
-const API_URL = Constants.expoConfig?.extra?.API_URL;
 
 const getInitialFormState = (pet: Pet): PetForm => ({
   name: pet.name || "",

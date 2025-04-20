@@ -3,10 +3,8 @@ import {
   FlatList,
   RefreshControl,
   Text,
-  StyleSheet,
   useColorScheme,
   View,
-  Animated,
 } from "react-native";
 import ProfilePostPanel from "@/components/ProfilePostPanel";
 import { Post } from "@/components/PostPanel";
@@ -57,9 +55,15 @@ export const UserPostList: React.FC<Props> = ({
           {headerComponent}
         </View>
       }
-      contentContainerStyle={{ flexGrow: 1, backgroundColor, paddingBottom: 20 }}
+      contentContainerStyle={{
+        flexGrow: 1,
+        backgroundColor,
+        paddingBottom: 20,
+      }}
       ListEmptyComponent={
-        <Text style={{ color: colors.text, textAlign: "center", marginTop: 32 }}>
+        <Text
+          style={{ color: colors.text, textAlign: "center", marginTop: 32 }}
+        >
           投稿しましょう！
         </Text>
       }

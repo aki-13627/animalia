@@ -20,10 +20,7 @@ import { speciesMap, speciesOptions } from "@/constants/petSpecies";
 import * as ImagePicker from "expo-image-picker";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthContext";
-import Constants from "expo-constants";
 import { fetchApi } from "@/utils/api";
-
-const API_URL = Constants.expoConfig?.extra?.API_URL;
 
 export const isValidDate = (dateStr: string): boolean => {
   const [year, month, day] = dateStr.split("-").map(Number);

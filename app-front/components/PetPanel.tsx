@@ -13,14 +13,11 @@ import {
   ColorSchemeName,
 } from "react-native";
 import { useQueryClient } from "@tanstack/react-query";
-import Constants from "expo-constants";
 import PetEditModal from "./PetEditModal";
 import { Pet } from "@/features/pet/schema";
 import { fetchApi } from "@/utils/api";
 import { z } from "zod";
 import { useAuth } from "@/providers/AuthContext";
-
-const API_URL = Constants.expoConfig?.extra?.API_URL;
 
 type PetPanelProps = {
   pet: Pet;
