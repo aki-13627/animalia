@@ -2,21 +2,21 @@ import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
-} from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import { Slot, usePathname, useRouter } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { ActivityIndicator, View, StyleSheet } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { useEffect } from "react";
-import "react-native-reanimated";
+} from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import { Slot, usePathname, useRouter } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
+import 'react-native-reanimated';
 
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider, useAuth } from "@/providers/AuthContext";
-import { Colors } from "@/constants/Colors";
-import Constants from "expo-constants";
-import { HomeTabScrollProvider } from "@/providers/HomeTabScrollContext";
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider, useAuth } from '@/providers/AuthContext';
+import { Colors } from '@/constants/Colors';
+import Constants from 'expo-constants';
+import { HomeTabScrollProvider } from '@/providers/HomeTabScrollContext';
 
 // SplashScreen が自動で隠れないように設定
 SplashScreen.preventAutoHideAsync();
@@ -34,12 +34,12 @@ function AuthSwitch() {
   useEffect(() => {
     if (!loading) {
       if (user) {
-        if (pathname.startsWith("/profile")) {
+        if (pathname.startsWith('/profile')) {
           return;
         }
-        router.replace("/(tabs)/posts");
+        router.replace('/(tabs)/posts');
       } else {
-        router.replace("/(auth)");
+        router.replace('/(auth)');
       }
     }
   }, [loading, user, router, pathname]);
@@ -49,7 +49,7 @@ function AuthSwitch() {
       <View style={styles.loadingContainer}>
         <ActivityIndicator
           size="large"
-          color={Colors[colorScheme ?? "light"].tint}
+          color={Colors[colorScheme ?? 'light'].tint}
         />
       </View>
     );
@@ -61,7 +61,7 @@ function AuthSwitch() {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function RootLayout() {
       <View style={styles.loadingContainer}>
         <ActivityIndicator
           size="large"
-          color={Colors[colorScheme ?? "light"].tint}
+          color={Colors[colorScheme ?? 'light'].tint}
         />
       </View>
     );
@@ -87,7 +87,7 @@ export default function RootLayout() {
       <AuthProvider>
         <HomeTabScrollProvider>
           <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
           >
             <AuthSwitch />
             <StatusBar style="auto" />
@@ -101,7 +101,7 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -5,10 +5,10 @@ import {
   Image,
   useColorScheme,
   Dimensions,
-} from "react-native";
-import { z } from "zod";
-import { Colors } from "@/constants/Colors";
-import { postSchema } from "@/features/post/schema";
+} from 'react-native';
+import { z } from 'zod';
+import { Colors } from '@/constants/Colors';
+import { postSchema } from '@/features/post/schema';
 
 export type Post = z.infer<typeof postSchema>;
 
@@ -17,18 +17,18 @@ type Props = {
 };
 
 export const PostPanel = ({ post }: Props) => {
-  const screenWidth = Dimensions.get("window").width;
+  const screenWidth = Dimensions.get('window').width;
   const imageHeight = (screenWidth * 14) / 9;
   const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? "light"];
+  const colors = Colors[colorScheme ?? 'light'];
 
   const date = new Date(post.createdAt);
   const formattedDateTime = date.toLocaleString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
   });
 
   return (
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 8,
     marginBottom: 8,
   },
@@ -73,22 +73,22 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   userInfo: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   userName: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   postTime: {
     fontSize: 12,
   },
   image: {
     borderRadius: 20,
-    width: "100%",
+    width: '100%',
   },
   caption: {
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: '500',
     marginTop: 8,
     marginHorizontal: 8,
   },

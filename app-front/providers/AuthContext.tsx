@@ -1,15 +1,15 @@
-import React, { createContext, useContext, ReactNode } from "react";
-import * as SecureStore from "expo-secure-store";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchApi } from "@/utils/api";
+import React, { createContext, useContext, ReactNode } from 'react';
+import * as SecureStore from 'expo-secure-store';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetchApi } from '@/utils/api';
 import {
   LoginForm,
   LoginResponse,
   loginResponseSchema,
   User,
   userSchema,
-} from "@/features/auth/schema";
-import { z } from "zod";
+} from '@/features/auth/schema';
+import { z } from 'zod';
 
 interface AuthContextType {
   user: User | undefined | null;
@@ -30,9 +30,9 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 // SecureStore のキー
-const ACCESS_TOKEN_KEY = "accessToken";
-const ID_TOKEN_KEY = "idToken";
-const REFRESH_TOKEN_KEY = "refreshToken";
+const ACCESS_TOKEN_KEY = 'accessToken';
+const ID_TOKEN_KEY = 'idToken';
+const REFRESH_TOKEN_KEY = 'refreshToken';
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -55,12 +55,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["user", token],
+    queryKey: ['user', token],
     queryFn: () =>
       token
         ? fetchApi({
-            method: "GET",
-            path: "auth/me",
+            method: 'GET',
+            path: 'auth/me',
             schema: userSchema,
             options: {},
             token,
@@ -80,13 +80,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       password,
     }: LoginForm): Promise<LoginResponse> => {
       return fetchApi({
-        method: "POST",
-        path: "auth/signin",
+        method: 'POST',
+        path: 'auth/signin',
         schema: loginResponseSchema,
         options: {
           data: { email, password },
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         },
         token: null,
@@ -101,7 +101,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
           response.refreshToken
         );
         setToken(response.accessToken);
-        queryClient.setQueryData(["user", response.accessToken], response.user);
+        queryClient.setQueryData(['user', response.accessToken], response.user);
       }
     },
     onError: async () => {
@@ -109,7 +109,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       await SecureStore.deleteItemAsync(ID_TOKEN_KEY);
       await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
       setToken(null);
-      queryClient.setQueryData(["user", null], null);
+      queryClient.setQueryData(['user', null], null);
     },
   });
 
@@ -118,12 +118,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     mutationFn: () =>
       token
         ? fetchApi({
-            method: "POST",
-            path: "auth/signout",
+            method: 'POST',
+            path: 'auth/signout',
             schema: z.void(),
             options: {
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
               },
             },
             token,
@@ -135,7 +135,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       await SecureStore.deleteItemAsync(ID_TOKEN_KEY);
       await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
       setToken(null);
-      queryClient.setQueryData(["user", null], null);
+      queryClient.setQueryData(['user', null], null);
     },
     onError: async (error) => {
       // エラー時も全トークンを削除（セッションが無効な可能性があるため）
@@ -143,7 +143,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       await SecureStore.deleteItemAsync(ID_TOKEN_KEY);
       await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
       setToken(null);
-      queryClient.setQueryData(["user", null], null);
+      queryClient.setQueryData(['user', null], null);
       throw error; // エラーを上位に伝播させる
     },
   });

@@ -1,21 +1,21 @@
-import { useMutation } from "@tanstack/react-query";
-import { fetchApi } from "@/utils/api";
-import { SignUpForm, signUpResponseSchema } from "./schema";
-import { Alert } from "react-native";
-import { useRouter } from "expo-router";
+import { useMutation } from '@tanstack/react-query';
+import { fetchApi } from '@/utils/api';
+import { SignUpForm, signUpResponseSchema } from './schema';
+import { Alert } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export const useSignUpScreen = () => {
   const router = useRouter();
   const { mutate, isPending } = useMutation({
     mutationFn: (data: SignUpForm) =>
       fetchApi({
-        method: "POST",
-        path: "auth/signup",
+        method: 'POST',
+        path: 'auth/signup',
         schema: signUpResponseSchema,
         options: {
           data: data,
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         },
         token: null,
@@ -28,24 +28,24 @@ export const useSignUpScreen = () => {
         { email: data.email, password: data.password, name: data.name },
         {
           onSuccess: () => {
-            Alert.alert("ユーザー登録が完了しました");
+            Alert.alert('ユーザー登録が完了しました');
             router.push({
-              pathname: "/(auth)/verify-email",
+              pathname: '/(auth)/verify-email',
               params: { email: data.email },
             });
           },
           onError: (error: Error) => {
             Alert.alert(
-              "サインアップエラー",
-              error.message || "ユーザーの登録に失敗しました"
+              'サインアップエラー',
+              error.message || 'ユーザーの登録に失敗しました'
             );
           },
         }
       );
     } catch (err) {
       Alert.alert(
-        "サインアップエラー",
-        (err as Error).message || "サインアップに失敗しました"
+        'サインアップエラー',
+        (err as Error).message || 'サインアップに失敗しました'
       );
     }
   };

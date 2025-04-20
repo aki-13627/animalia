@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { useColorScheme } from "react-native";
-import { Colors } from "@/constants/Colors";
-import { User } from "@/features/auth/schema";
+import React from 'react';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { useColorScheme } from 'react-native';
+import { Colors } from '@/constants/Colors';
+import { User } from '@/features/auth/schema';
 
 type ProfileHeaderProps = {
   user: User;
@@ -14,9 +14,9 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   onLogout,
 }) => {
   const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? "light"];
+  const colors = Colors[colorScheme ?? 'light'];
   const styles = getStyles(colors);
-  const backgroundColor = colorScheme === "light" ? "white" : "black";
+  const backgroundColor = colorScheme === 'light' ? 'white' : 'black';
 
   return (
     <View style={[styles.headerContainer, { backgroundColor }]}>
@@ -45,16 +45,16 @@ const getStyles = (colors: typeof Colors.light) =>
       paddingBottom: 8,
     },
     topRow: {
-      flexDirection: "row-reverse",
+      flexDirection: 'row-reverse',
       paddingRight: 20,
       paddingTop: 8,
     },
     logoutText: {
       color: colors.tint,
-      fontWeight: "600",
+      fontWeight: '600',
     },
     profileSection: {
-      alignItems: "center",
+      alignItems: 'center',
       marginTop: 8,
     },
     profileImage: {
@@ -65,7 +65,7 @@ const getStyles = (colors: typeof Colors.light) =>
     profileName: {
       marginTop: 10,
       fontSize: 20,
-      fontWeight: "bold",
+      fontWeight: 'bold',
       color: colors.text,
     },
     profileBio: {

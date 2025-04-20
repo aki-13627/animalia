@@ -10,14 +10,14 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-} from "react-native";
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { z } from "zod";
-import { Ionicons } from "@expo/vector-icons";
-import { useAuth } from "@/providers/AuthContext";
-import { useRouter } from "expo-router";
-import { fetchApi } from "@/utils/api";
+} from 'react-native';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { z } from 'zod';
+import { Ionicons } from '@expo/vector-icons';
+import { useAuth } from '@/providers/AuthContext';
+import { useRouter } from 'expo-router';
+import { fetchApi } from '@/utils/api';
 
 type Props = {
   photoUri: string;
@@ -38,8 +38,8 @@ export function CreatePostModal({ photoUri, onClose }: Props) {
   const { user, token } = useAuth();
   const initialFormState = {
     imageUri: photoUri,
-    caption: "",
-    userId: user?.id ?? "",
+    caption: '',
+    userId: user?.id ?? '',
   };
 
   const [formData, setFormData] = useState<PostForm>(initialFormState);
@@ -47,8 +47,8 @@ export function CreatePostModal({ photoUri, onClose }: Props) {
   const createPostMutation = useMutation({
     mutationFn: (data: FormData) => {
       return fetchApi({
-        method: "POST",
-        path: "posts",
+        method: 'POST',
+        path: 'posts',
         schema: z.void(),
         options: {
           data,
@@ -57,13 +57,13 @@ export function CreatePostModal({ photoUri, onClose }: Props) {
       });
     },
     onSuccess: () => {
-      Alert.alert("投稿完了", "投稿が完了しました！");
+      Alert.alert('投稿完了', '投稿が完了しました！');
       onClose();
-      router.replace("/(tabs)/posts");
+      router.replace('/(tabs)/posts');
     },
     onError: (error) => {
       console.error(`error: ${error}`);
-      Alert.alert("エラー", "投稿に失敗しました。");
+      Alert.alert('エラー', '投稿に失敗しました。');
     },
   });
 
@@ -72,19 +72,19 @@ export function CreatePostModal({ photoUri, onClose }: Props) {
     if (!result.success) {
       const errorMessage = Object.values(result.error.flatten().fieldErrors)
         .flat()
-        .join("\n");
-      Alert.alert("フォームエラー", errorMessage);
+        .join('\n');
+      Alert.alert('フォームエラー', errorMessage);
       return;
     }
 
     const fd = new FormData();
-    fd.append("image", {
+    fd.append('image', {
       uri: formData.imageUri,
-      name: "photo.jpg",
-      type: "image/jpeg",
+      name: 'photo.jpg',
+      type: 'image/jpeg',
     } as any);
-    fd.append("caption", formData.caption);
-    fd.append("userId", formData.userId);
+    fd.append('caption', formData.caption);
+    fd.append('userId', formData.userId);
 
     createPostMutation.mutate(fd);
   };
@@ -110,7 +110,7 @@ export function CreatePostModal({ photoUri, onClose }: Props) {
         </View>
         <KeyboardAvoidingView
           style={styles.container}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <View style={styles.captionWrapper}>
             <TextInput
@@ -132,50 +132,50 @@ export function CreatePostModal({ photoUri, onClose }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
   },
   inner: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   header: {
     marginTop: 50,
     paddingHorizontal: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   postButton: {
     fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
   },
   imageWrapper: {
-    position: "absolute",
+    position: 'absolute',
     top: 100,
     bottom: 100,
     left: 0,
     right: 0,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     zIndex: -1,
   },
   image: {
-    width: "80%",
-    height: "100%",
+    width: '80%',
+    height: '100%',
     borderRadius: 30,
   },
   captionWrapper: {
     paddingHorizontal: 20,
     paddingBottom: 25,
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   input: {
-    backgroundColor: "rgba(255,255,255,0.8)",
+    backgroundColor: 'rgba(255,255,255,0.8)',
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 16,
-    color: "#000",
+    color: '#000',
   },
 });

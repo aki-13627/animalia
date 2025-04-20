@@ -1,8 +1,8 @@
-import { CreatePostModal } from "@/components/CreatePostModal";
-import { useFocusEffect } from "@react-navigation/native";
-import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import { useRouter } from "expo-router";
-import { useCallback, useRef, useState } from "react";
+import { CreatePostModal } from '@/components/CreatePostModal';
+import { useFocusEffect } from '@react-navigation/native';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { useRouter } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
 import {
   Animated,
   Button,
@@ -11,14 +11,14 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from "react-native";
+} from 'react-native';
 
-const { height } = Dimensions.get("window");
+const { height } = Dimensions.get('window');
 
 export default function CameraScreen() {
   const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
-  const [facing, setFacing] = useState<CameraType>("back");
+  const [facing, setFacing] = useState<CameraType>('back');
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const cameraRef = useRef<any>(null);
 
@@ -40,7 +40,7 @@ export default function CameraScreen() {
       duration: 300,
       useNativeDriver: true,
     }).start(() => {
-      router.replace("/(tabs)/posts");
+      router.replace('/(tabs)/posts');
     });
   };
 
@@ -55,7 +55,7 @@ export default function CameraScreen() {
   }
 
   const handleFlip = () => {
-    setFacing((prev) => (prev === "back" ? "front" : "back"));
+    setFacing((prev) => (prev === 'back' ? 'front' : 'back'));
   };
 
   const takePhoto = async () => {
@@ -66,12 +66,11 @@ export default function CameraScreen() {
   };
 
   return (
-    <Animated.View style={[styles.container, { transform: [{ translateY: slideAnim }] }]}>
+    <Animated.View
+      style={[styles.container, { transform: [{ translateY: slideAnim }] }]}
+    >
       {photoUri ? (
-        <CreatePostModal
-        photoUri={photoUri}
-        onClose={() => setPhotoUri("")}
-        />
+        <CreatePostModal photoUri={photoUri} onClose={() => setPhotoUri('')} />
       ) : (
         <CameraView ref={cameraRef} style={styles.camera} facing={facing}>
           <TouchableOpacity
@@ -84,7 +83,10 @@ export default function CameraScreen() {
             <Text style={styles.flipText}>↺</Text>
           </TouchableOpacity>
           <View style={styles.bottomControls}>
-            <TouchableOpacity style={styles.shutterButton} onPress={takePhoto} />
+            <TouchableOpacity
+              style={styles.shutterButton}
+              onPress={takePhoto}
+            />
           </View>
         </CameraView>
       )}
@@ -100,55 +102,55 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   message: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 20,
   },
   preview: {
     flex: 1,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   bottomControls: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 40,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   shutterButton: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderWidth: 4,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
   },
   flipButton: {
-    position: "absolute",
+    position: 'absolute',
     width: 50,
     top: 40,
     right: 20,
-    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundColor: 'rgba(0,0,0,0.4)',
     borderRadius: 20,
     padding: 10,
   },
   flipText: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 24,
-    color: "#fff",
+    color: '#fff',
   },
   closeButton: {
-    position: "absolute",
+    position: 'absolute',
     width: 50,
     top: 40,
     left: 20,
-    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundColor: 'rgba(0,0,0,0.4)',
     borderRadius: 20,
     padding: 10,
     zIndex: 1,
   },
   closeText: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 24,
-    color: "#fff",
+    color: '#fff',
   },
 });

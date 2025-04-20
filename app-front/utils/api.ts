@@ -1,6 +1,6 @@
-import axios, { AxiosRequestConfig } from "axios";
-import Constants from "expo-constants";
-import { z } from "zod";
+import axios, { AxiosRequestConfig } from 'axios';
+import Constants from 'expo-constants';
+import { z } from 'zod';
 
 /**
  * APIリクエストを行い、レスポンスをバリデーションして返す。
@@ -17,7 +17,7 @@ export async function fetchApi<T>({
   options = {},
   token,
 }: {
-  method: "GET" | "POST" | "PUT" | "DELETE";
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   path: string;
   schema: z.ZodType<T>;
   options: AxiosRequestConfig<any>;
@@ -25,7 +25,7 @@ export async function fetchApi<T>({
 }): Promise<T> {
   const BASE_URL = Constants.expoConfig?.extra?.API_URL;
   if (!BASE_URL) {
-    throw new Error("API_URL is not set");
+    throw new Error('API_URL is not set');
   }
 
   const API_URL = new URL(path, BASE_URL).toString();
