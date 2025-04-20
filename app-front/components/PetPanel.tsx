@@ -1,5 +1,5 @@
-import { reverseSpeciesMap } from "@/constants/petSpecies";
-import React, { useRef, useState } from "react";
+import { reverseSpeciesMap } from '@/constants/petSpecies';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -11,13 +11,13 @@ import {
   Animated,
   Dimensions,
   ColorSchemeName,
-} from "react-native";
-import { useQueryClient } from "@tanstack/react-query";
-import PetEditModal from "./PetEditModal";
-import { Pet } from "@/features/pet/schema";
-import { fetchApi } from "@/utils/api";
-import { z } from "zod";
-import { useAuth } from "@/providers/AuthContext";
+} from 'react-native';
+import { useQueryClient } from '@tanstack/react-query';
+import PetEditModal from './PetEditModal';
+import { Pet } from '@/features/pet/schema';
+import { fetchApi } from '@/utils/api';
+import { z } from 'zod';
+import { useAuth } from '@/providers/AuthContext';
 
 type PetPanelProps = {
   pet: Pet;
@@ -25,13 +25,13 @@ type PetPanelProps = {
 };
 
 const birthDayParser = (birthDay: string) => {
-  const [year, month, day] = birthDay.split("-");
+  const [year, month, day] = birthDay.split('-');
   return `${year}年${month}月${day}日`;
 };
 
 export const PetPanel: React.FC<PetPanelProps> = ({ pet, colorScheme }) => {
   const { token } = useAuth();
-  const windowHeight = Dimensions.get("window").height;
+  const windowHeight = Dimensions.get('window').height;
   const [menuVisible, setMenuVisible] = useState(false);
   const [isFullScreenVisible, setIsFullScreenVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
@@ -59,20 +59,20 @@ export const PetPanel: React.FC<PetPanelProps> = ({ pet, colorScheme }) => {
 
   const handleDelete = () => {
     Alert.alert(
-      "削除の確認",
-      "本当に削除してよろしいですか？",
+      '削除の確認',
+      '本当に削除してよろしいですか？',
       [
         {
-          text: "キャンセル",
+          text: 'キャンセル',
           onPress: () => {},
-          style: "cancel",
+          style: 'cancel',
         },
         {
-          text: "削除",
+          text: '削除',
           onPress: async () => {
             try {
               await fetchApi({
-                method: "DELETE",
+                method: 'DELETE',
                 path: `pets/delete`,
                 schema: z.void(),
                 options: {
@@ -80,10 +80,10 @@ export const PetPanel: React.FC<PetPanelProps> = ({ pet, colorScheme }) => {
                 },
                 token,
               });
-              queryClient.invalidateQueries({ queryKey: ["pets"] });
+              queryClient.invalidateQueries({ queryKey: ['pets'] });
             } catch (error) {
               console.error(error);
-              Alert.alert("エラー", "削除に失敗しました");
+              Alert.alert('エラー', '削除に失敗しました');
             }
           },
         },
@@ -159,20 +159,20 @@ export const PetPanel: React.FC<PetPanelProps> = ({ pet, colorScheme }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
     padding: 10,
     height: 200,
     borderRadius: 25,
-    borderColor: "rgba(0, 0, 0, 0.3)",
-    position: "relative",
+    borderColor: 'rgba(0, 0, 0, 0.3)',
+    position: 'relative',
   },
   icon: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
   info: {
     marginLeft: 50,
@@ -181,45 +181,45 @@ const styles = StyleSheet.create({
   name: {
     paddingBottom: 10,
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   species: {
     fontSize: 16,
-    color: "#666",
+    color: '#666',
   },
   birthDay: {
     paddingTop: 5,
     fontSize: 16,
-    color: "#666",
+    color: '#666',
   },
   menuButton: {
-    position: "absolute",
+    position: 'absolute',
     top: 10,
     right: 10,
     padding: 5,
   },
   menuButtonText: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   overlay: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     zIndex: 90,
   },
   menu: {
-    position: "absolute",
+    position: 'absolute',
     top: 40,
     right: 10,
     width: 60,
     borderWidth: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-    alignItems: "center",
-    borderColor: "#ccc",
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    alignItems: 'center',
+    borderColor: '#ccc',
     borderRadius: 5,
     zIndex: 100,
   },
@@ -228,14 +228,14 @@ const styles = StyleSheet.create({
   },
   fullScreenOverlay: {
     flex: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   fullScreenImage: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "contain",
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
 });
 

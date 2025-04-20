@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StyleSheet,
   Animated,
@@ -9,13 +9,13 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   FlatList,
-} from "react-native";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { PostPanel } from "@/components/PostPanel";
-import { Colors } from "@/constants/Colors";
-import { useHomeTabHandler } from "@/providers/HomeTabScrollContext";
-import { usePostsScreen } from "@/features/post/usePostsScreen";
+} from 'react-native';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import { PostPanel } from '@/components/PostPanel';
+import { Colors } from '@/constants/Colors';
+import { useHomeTabHandler } from '@/providers/HomeTabScrollContext';
+import { usePostsScreen } from '@/features/post/usePostsScreen';
 
 export default function PostsScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -26,9 +26,9 @@ export default function PostsScreen() {
   const HEADER_HEIGHT = 80;
 
   const icon =
-    colorScheme === "light"
-      ? require("../../assets/images/icon-green.png")
-      : require("../../assets/images/icon-dark.png");
+    colorScheme === 'light'
+      ? require('../../assets/images/icon-green.png')
+      : require('../../assets/images/icon-dark.png');
 
   const { data, isLoading, error, refetch } = usePostsScreen();
 
@@ -39,7 +39,7 @@ export default function PostsScreen() {
   const headerTranslateY = scrollY.interpolate({
     inputRange: [0, HEADER_HEIGHT],
     outputRange: [0, -HEADER_HEIGHT],
-    extrapolate: "clamp",
+    extrapolate: 'clamp',
   });
 
   const { setHandler } = useHomeTabHandler();
@@ -77,7 +77,7 @@ export default function PostsScreen() {
               refreshing={false}
               onRefresh={() => {}}
               progressViewOffset={HEADER_HEIGHT}
-              tintColor={colorScheme === "light" ? "black" : "white"}
+              tintColor={colorScheme === 'light' ? 'black' : 'white'}
             />
           }
           contentInset={{ top: HEADER_HEIGHT }}
@@ -94,7 +94,7 @@ export default function PostsScreen() {
           styles.header,
           {
             transform: [{ translateY: headerTranslateY }],
-            backgroundColor: Colors[colorScheme ?? "light"].background,
+            backgroundColor: Colors[colorScheme ?? 'light'].background,
           },
         ]}
       >
@@ -104,7 +104,7 @@ export default function PostsScreen() {
       <Animated.FlatList
         ref={listRef}
         style={{
-          backgroundColor: colorScheme === "light" ? "white" : "black",
+          backgroundColor: colorScheme === 'light' ? 'white' : 'black',
         }}
         contentInset={{ top: HEADER_HEIGHT + 12 }}
         contentOffset={{ x: 0, y: -(HEADER_HEIGHT + 12) }}
@@ -116,7 +116,7 @@ export default function PostsScreen() {
           <RefreshControl
             refreshing={false}
             onRefresh={() => {}}
-            tintColor={colorScheme === "light" ? "black" : "white"}
+            tintColor={colorScheme === 'light' ? 'black' : 'white'}
           />
         }
         onScroll={Animated.event(
@@ -137,25 +137,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     height: 80,
     zIndex: 10,
-    justifyContent: "flex-start",
-    alignItems: "center",
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   logo: {
     width: 32,
     height: 32,
     marginTop: 40,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   errorText: {
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 100,
     fontSize: 16,
-    color: "gray",
+    color: 'gray',
   },
 });

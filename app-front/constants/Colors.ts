@@ -1,5 +1,5 @@
 const tintColorLight = '#264534'; // 濃い緑
-const tintColorDark = '#fff';  // 明るい黄色
+const tintColorDark = '#fff'; // 明るい黄色
 
 export const Colors = {
   light: {

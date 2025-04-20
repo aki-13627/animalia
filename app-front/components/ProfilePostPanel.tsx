@@ -1,12 +1,12 @@
-import React from "react";
-import { TouchableOpacity, Image, StyleSheet, Dimensions } from "react-native";
+import React from 'react';
+import { TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 
 export type ProfilePostPanelProps = {
   imageUrl: string;
   onPress?: () => void;
 };
 
-const windowWidth = Dimensions.get("window").width;
+const windowWidth = Dimensions.get('window').width;
 const imageWidth = windowWidth / 3;
 const imageHeight = (imageWidth * 4) / 3;
 
@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
     padding: 1,
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     borderRadius: 2,
   },
 });

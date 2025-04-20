@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 import {
   FlatList,
   RefreshControl,
   Text,
   View,
   useColorScheme,
-} from "react-native";
-import PetPanel from "@/components/PetPanel";
-import { Colors } from "@/constants/Colors";
-import { Pet } from "@/features/pet/schema";
+} from 'react-native';
+import PetPanel from '@/components/PetPanel';
+import { Colors } from '@/constants/Colors';
+import { Pet } from '@/features/pet/schema';
 
 type Props = {
   pets: Pet[];
@@ -27,8 +27,8 @@ export const UserPetList: React.FC<Props> = ({
   headerComponent,
   onScroll,
 }) => {
-  const colors = Colors[colorScheme ?? "light"];
-  const backgroundColor = colorScheme === "dark" ? "black" : "white";
+  const colors = Colors[colorScheme ?? 'light'];
+  const backgroundColor = colorScheme === 'dark' ? 'black' : 'white';
 
   return (
     <FlatList
@@ -44,7 +44,7 @@ export const UserPetList: React.FC<Props> = ({
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          tintColor={colorScheme === "light" ? "black" : "white"}
+          tintColor={colorScheme === 'light' ? 'black' : 'white'}
         />
       }
       onScroll={onScroll}
@@ -61,7 +61,7 @@ export const UserPetList: React.FC<Props> = ({
       }}
       ListEmptyComponent={
         <Text
-          style={{ color: colors.text, textAlign: "center", marginTop: 32 }}
+          style={{ color: colors.text, textAlign: 'center', marginTop: 32 }}
         >
           マイペットを登録しましょう！
         </Text>

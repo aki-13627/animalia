@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Modal,
   Animated,
@@ -13,17 +13,17 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
-} from "react-native";
-import { Colors } from "@/constants/Colors";
-import { z } from "zod";
-import { speciesMap, speciesOptions } from "@/constants/petSpecies";
-import * as ImagePicker from "expo-image-picker";
-import { useMutation } from "@tanstack/react-query";
-import { useAuth } from "@/providers/AuthContext";
-import { fetchApi } from "@/utils/api";
+} from 'react-native';
+import { Colors } from '@/constants/Colors';
+import { z } from 'zod';
+import { speciesMap, speciesOptions } from '@/constants/petSpecies';
+import * as ImagePicker from 'expo-image-picker';
+import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '@/providers/AuthContext';
+import { fetchApi } from '@/utils/api';
 
 export const isValidDate = (dateStr: string): boolean => {
-  const [year, month, day] = dateStr.split("-").map(Number);
+  const [year, month, day] = dateStr.split('-').map(Number);
   const date = new Date(year, month - 1, day);
   return (
     date.getFullYear() === year &&
@@ -33,16 +33,16 @@ export const isValidDate = (dateStr: string): boolean => {
 };
 
 export const petInputSchema = z.object({
-  name: z.string().min(1, { message: "名前は必須です" }),
-  petType: z.enum(["dog", "cat"], { required_error: "種類は必須です" }),
-  species: z.string().min(1, { message: "品種を選択してください" }),
+  name: z.string().min(1, { message: '名前は必須です' }),
+  petType: z.enum(['dog', 'cat'], { required_error: '種類は必須です' }),
+  species: z.string().min(1, { message: '品種を選択してください' }),
   birthDay: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, {
-      message: "誕生日はYYYY-MM-DD形式で入力してください",
+      message: '誕生日はYYYY-MM-DD形式で入力してください',
     })
     .refine((dateStr) => isValidDate(dateStr), {
-      message: "存在する日付を入力してください",
+      message: '存在する日付を入力してください',
     }),
   iconImageUri: z.string().nullable(),
 });
@@ -50,10 +50,10 @@ export const petInputSchema = z.object({
 export type PetForm = z.infer<typeof petInputSchema>;
 
 const initialFormState: PetForm = {
-  name: "",
-  petType: "dog",
-  species: "",
-  birthDay: "",
+  name: '',
+  petType: 'dog',
+  species: '',
+  birthDay: '',
   iconImageUri: null,
 };
 
@@ -73,7 +73,7 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
   refetchPets,
 }) => {
   const { user, token } = useAuth();
-  const colors = colorScheme === "light" ? Colors.light : Colors.dark;
+  const colors = colorScheme === 'light' ? Colors.light : Colors.dark;
 
   const [formData, setFormData] = useState<PetForm>(initialFormState);
 
@@ -82,12 +82,12 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
   const [showSpeciesSelector, setShowSpeciesSelector] = useState(false);
   const pickIconImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert("権限エラー", "メディアライブラリへのアクセス許可が必要です");
+    if (status !== 'granted') {
+      Alert.alert('権限エラー', 'メディアライブラリへのアクセス許可が必要です');
       return;
     }
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: "images",
+      mediaTypes: 'images',
       quality: 0.7,
     });
     if (!result.canceled && result.assets && result.assets.length > 0) {
@@ -98,10 +98,10 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
   const registerPetMutation = useMutation({
     mutationFn: (data: FormData) => {
       return fetchApi({
-        method: "POST",
-        path: "pets/new",
+        method: 'POST',
+        path: 'pets/new',
         schema: z.void(),
-        options: { data, headers: { "Content-Type": "multipart/form-data" } },
+        options: { data, headers: { 'Content-Type': 'multipart/form-data' } },
         token,
       });
     },
@@ -115,28 +115,28 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
     if (!result.success) {
       const errorMessage = Object.values(result.error.flatten().fieldErrors)
         .flat()
-        .join("\n");
-      Alert.alert("入力エラー", errorMessage);
+        .join('\n');
+      Alert.alert('入力エラー', errorMessage);
       return;
     }
 
     // FormData の作成
     const fd = new FormData();
     if (!user?.id) {
-      Alert.alert("エラー", "ユーザー情報が取得できませんでした");
+      Alert.alert('エラー', 'ユーザー情報が取得できませんでした');
       return;
     }
-    fd.append("name", formData.name);
-    fd.append("type", formData.petType);
-    fd.append("species", backendSpecies);
-    fd.append("birthDay", formData.birthDay);
-    fd.append("userId", user?.id);
+    fd.append('name', formData.name);
+    fd.append('type', formData.petType);
+    fd.append('species', backendSpecies);
+    fd.append('birthDay', formData.birthDay);
+    fd.append('userId', user?.id);
     // アイコン画像が選択されている場合
     if (formData.iconImageUri) {
-      const filename = formData.iconImageUri.split("/").pop();
-      const match = /\.(\w+)$/.exec(filename || "");
-      const mimeType = match ? `image/${match[1]}` : "image";
-      fd.append("image", {
+      const filename = formData.iconImageUri.split('/').pop();
+      const match = /\.(\w+)$/.exec(filename || '');
+      const mimeType = match ? `image/${match[1]}` : 'image';
+      fd.append('image', {
         uri: formData.iconImageUri,
         name: filename,
         type: mimeType,
@@ -145,13 +145,13 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
 
     try {
       await registerPetMutation.mutateAsync(fd);
-      Alert.alert("成功", "ペットが正常に登録されました");
+      Alert.alert('成功', 'ペットが正常に登録されました');
       await refetchPets();
       setFormData(initialFormState);
       onClose();
     } catch (error) {
       console.error(error);
-      Alert.alert("登録エラー", "ペットの登録に失敗しました");
+      Alert.alert('登録エラー', 'ペットの登録に失敗しました');
     }
   };
 
@@ -213,7 +213,7 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
               style={[styles.selectorInput, { borderColor: colors.icon }]}
             >
               <Text style={{ color: colors.text }}>
-                {formData.petType === "dog" ? "犬" : "猫"}
+                {formData.petType === 'dog' ? '犬' : '猫'}
               </Text>
             </TouchableOpacity>
             <Text style={styles.inputTitle}>品種</Text>
@@ -240,7 +240,7 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
               onPress={handleSubmit}
               style={[styles.submitButton, { backgroundColor: colors.tint }]}
             >
-              <Text style={{ color: colors.background, fontWeight: "bold" }}>
+              <Text style={{ color: colors.background, fontWeight: 'bold' }}>
                 登録する
               </Text>
             </TouchableOpacity>
@@ -262,7 +262,7 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
-                    setFormData({ ...formData, petType: "dog", species: "" });
+                    setFormData({ ...formData, petType: 'dog', species: '' });
                     setShowPetTypeSelector(false);
                   }}
                 >
@@ -272,7 +272,7 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    setFormData({ ...formData, petType: "cat", species: "" });
+                    setFormData({ ...formData, petType: 'cat', species: '' });
                     setShowPetTypeSelector(false);
                   }}
                 >
@@ -326,31 +326,31 @@ export const PetRegiserModal: React.FC<PetRegiserModalProps> = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   modalContainer: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     borderRadius: 10,
     padding: 20,
   },
   cancelButton: {
-    position: "absolute",
+    position: 'absolute',
     top: 50,
     left: 10,
     padding: 10,
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 60,
     marginBottom: 20,
-    textAlign: "center",
+    textAlign: 'center',
   },
   inputTitle: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     paddingBottom: 4,
   },
   input: {
@@ -368,54 +368,54 @@ const styles = StyleSheet.create({
   submitButton: {
     padding: 12,
     borderRadius: 4,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 10,
   },
   selectorOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.3)",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   selectorContainer: {
-    width: "80%",
+    width: '80%',
     borderRadius: 10,
     padding: 20,
   },
   // 固定高さのコンテナ（例: 300px）
   selectorContainerFixed: {
-    width: "80%",
+    width: '80%',
     height: 300,
     borderRadius: 10,
     padding: 20,
   },
   selectorTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   selectorItem: {
     fontSize: 16,
     paddingVertical: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
   iconContainer: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginBottom: 20,
     width: 100,
     height: 100,
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: "#ccc",
-    overflow: "hidden",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#eee",
+    borderColor: '#ccc',
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#eee',
   },
   iconImage: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   iconPlaceholder: {
     fontSize: 14,

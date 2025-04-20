@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -7,29 +7,29 @@ import {
   Animated,
   Dimensions,
   useColorScheme,
-} from "react-native";
-import { ThemedView } from "@/components/ThemedView";
-import { useAuth } from "@/providers/AuthContext";
-import { Colors } from "@/constants/Colors";
-import { ProfileHeader } from "@/components/ProfileHeader";
+} from 'react-native';
+import { ThemedView } from '@/components/ThemedView';
+import { useAuth } from '@/providers/AuthContext';
+import { Colors } from '@/constants/Colors';
+import { ProfileHeader } from '@/components/ProfileHeader';
 import {
   ProfileTabSelector,
   ProfileTabType,
-} from "@/components/ProfileTabSelector";
-import { router } from "expo-router";
-import { ProfileEditModal } from "@/components/ProfileEditModal";
-import { PetRegiserModal } from "@/components/PetRegisterModal";
-import { UserPetList } from "@/components/UserPetsList";
-import { UserPostList } from "@/components/UserPostList";
+} from '@/components/ProfileTabSelector';
+import { router } from 'expo-router';
+import { ProfileEditModal } from '@/components/ProfileEditModal';
+import { PetRegiserModal } from '@/components/PetRegisterModal';
+import { UserPetList } from '@/components/UserPetsList';
+import { UserPostList } from '@/components/UserPostList';
 
-const windowWidth = Dimensions.get("window").width;
+const windowWidth = Dimensions.get('window').width;
 
 const ProfileScreen: React.FC = () => {
   const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme ?? "light"];
+  const colors = Colors[colorScheme ?? 'light'];
   const styles = getStyles(colors);
 
-  const [selectedTab, setSelectedTab] = useState<ProfileTabType>("posts");
+  const [selectedTab, setSelectedTab] = useState<ProfileTabType>('posts');
   const {
     user,
     loading: authLoading,
@@ -43,7 +43,7 @@ const ProfileScreen: React.FC = () => {
 
   const slideAnimProfile = useRef(new Animated.Value(windowWidth)).current;
   const slideAnimPet = useRef(new Animated.Value(windowWidth)).current;
-  const backgroundColor = colorScheme === "light" ? "white" : "black";
+  const backgroundColor = colorScheme === 'light' ? 'white' : 'black';
 
   const scrollY = useRef(new Animated.Value(0)).current;
   const HEADER_THRESHOLD = 150;
@@ -51,7 +51,7 @@ const ProfileScreen: React.FC = () => {
   const headerOpacity = scrollY.interpolate({
     inputRange: [HEADER_THRESHOLD - 20, HEADER_THRESHOLD],
     outputRange: [0, 1],
-    extrapolate: "clamp",
+    extrapolate: 'clamp',
   });
 
   const handleLogout = async () => {
@@ -60,7 +60,7 @@ const ProfileScreen: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
-    router.replace("/(auth)");
+    router.replace('/(auth)');
   };
 
   const openEditProfileModal = () => {
@@ -130,7 +130,7 @@ const ProfileScreen: React.FC = () => {
   );
 
   const contentList =
-    selectedTab === "mypet" ? (
+    selectedTab === 'mypet' ? (
       <UserPetList
         pets={user.pets}
         onRefresh={refetchUser}
@@ -194,23 +194,23 @@ const getStyles = (colors: typeof Colors.light) =>
       paddingTop: 42,
       paddingBottom: 12,
       backgroundColor: colors.background,
-      alignItems: "center",
+      alignItems: 'center',
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderBottomColor: colors.icon,
     },
     userName: {
       fontSize: 20,
-      fontWeight: "bold",
+      fontWeight: 'bold',
       color: colors.text,
     },
     loadingContainer: {
       flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     editButtonsContainer: {
-      flexDirection: "row",
-      justifyContent: "space-evenly",
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
       marginTop: 10,
       marginBottom: 10,
     },
@@ -221,11 +221,11 @@ const getStyles = (colors: typeof Colors.light) =>
       paddingVertical: 8,
       paddingHorizontal: 16,
       width: 160,
-      alignItems: "center",
+      alignItems: 'center',
     },
     buttonText: {
       color: colors.text,
-      fontWeight: "bold",
+      fontWeight: 'bold',
     },
   });
 

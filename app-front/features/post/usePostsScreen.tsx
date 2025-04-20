@@ -1,8 +1,8 @@
-import { useAuth } from "@/providers/AuthContext";
-import { fetchApi } from "@/utils/api";
-import { useQuery } from "@tanstack/react-query";
-import { z } from "zod";
-import { postSchema } from "./schema";
+import { useAuth } from '@/providers/AuthContext';
+import { fetchApi } from '@/utils/api';
+import { useQuery } from '@tanstack/react-query';
+import { z } from 'zod';
+import { postSchema } from './schema';
 
 const getPostsResponseSchema = z.object({
   posts: z.array(postSchema),
@@ -11,11 +11,11 @@ const getPostsResponseSchema = z.object({
 export const usePostsScreen = () => {
   const { token } = useAuth();
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ['posts'],
     queryFn: async () => {
       const result = await fetchApi({
-        method: "GET",
-        path: "posts",
+        method: 'GET',
+        path: 'posts',
         schema: getPostsResponseSchema,
         options: {},
         token,
