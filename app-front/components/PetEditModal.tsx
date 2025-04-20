@@ -22,11 +22,12 @@ import {
 } from "@/constants/petSpecies";
 import * as ImagePicker from "expo-image-picker";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { useAuth } from "@/providers/AuthContext";
 import Constants from "expo-constants";
 import { PetForm, petInputSchema } from "./PetRegisterModal";
 import { Pet } from "@/features/pet/schema";
+import { fetchApi } from "@/utils/api";
+import { z } from "zod";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 
@@ -53,7 +54,7 @@ export const PetEditModal: React.FC<PetEditModalProps> = ({
   colorScheme,
   pet,
 }) => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const colors = colorScheme === "light" ? Colors.light : Colors.dark;
 
   const [formData, setFormData] = useState<PetForm>(getInitialFormState(pet));
@@ -83,8 +84,15 @@ export const PetEditModal: React.FC<PetEditModalProps> = ({
   // 編集用の更新API（PUT や PATCH を使用してください）
   const updatePetMutation = useMutation({
     mutationFn: (data: FormData) => {
-      return axios.put(`${API_URL}/pets/update?petId=${pet.id}`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
+      return fetchApi({
+        method: "PUT",
+        path: `pets/update?petId=${pet.id}`,
+        schema: z.void(),
+        options: {
+          data,
+          headers: { "Content-Type": "multipart/form-data" },
+        },
+        token,
       });
     },
   });

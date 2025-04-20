@@ -13,10 +13,12 @@ import {
   ColorSchemeName,
 } from "react-native";
 import { useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import Constants from "expo-constants";
 import PetEditModal from "./PetEditModal";
 import { Pet } from "@/features/pet/schema";
+import { fetchApi } from "@/utils/api";
+import { z } from "zod";
+import { useAuth } from "@/providers/AuthContext";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 
@@ -31,6 +33,7 @@ const birthDayParser = (birthDay: string) => {
 };
 
 export const PetPanel: React.FC<PetPanelProps> = ({ pet, colorScheme }) => {
+  const { token } = useAuth();
   const windowHeight = Dimensions.get("window").height;
   const [menuVisible, setMenuVisible] = useState(false);
   const [isFullScreenVisible, setIsFullScreenVisible] = useState(false);
@@ -71,16 +74,16 @@ export const PetPanel: React.FC<PetPanelProps> = ({ pet, colorScheme }) => {
           text: "削除",
           onPress: async () => {
             try {
-              // axiosを使用してDELETEリクエストを送信
-              const response = await axios.delete(`${API_URL}/pets/delete`, {
-                params: { petId: pet.id },
+              await fetchApi({
+                method: "DELETE",
+                path: `pets/delete`,
+                schema: z.void(),
+                options: {
+                  params: { petId: pet.id },
+                },
+                token,
               });
-              if (response.status === 200) {
-                // queryKey: ["pets"] のキャッシュを無効化して最新状態に更新
-                queryClient.invalidateQueries({ queryKey: ["pets"] });
-              } else {
-                throw new Error("削除に失敗しました");
-              }
+              queryClient.invalidateQueries({ queryKey: ["pets"] });
             } catch (error) {
               console.error(error);
               Alert.alert("エラー", "削除に失敗しました");
