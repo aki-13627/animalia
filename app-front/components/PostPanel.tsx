@@ -1,7 +1,14 @@
-import { View, Text, StyleSheet, Image, useColorScheme, Dimensions } from "react-native";
-import { postSchema } from "@/app/(tabs)/posts";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  useColorScheme,
+  Dimensions,
+} from "react-native";
 import { z } from "zod";
 import { Colors } from "@/constants/Colors";
+import { postSchema } from "@/features/post/schema";
 
 export type Post = z.infer<typeof postSchema>;
 
@@ -17,11 +24,11 @@ export const PostPanel = ({ post }: Props) => {
 
   const date = new Date(post.createdAt);
   const formattedDateTime = date.toLocaleString(undefined, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
   return (
@@ -29,12 +36,21 @@ export const PostPanel = ({ post }: Props) => {
       <View style={styles.header}>
         <Image source={{ uri: post.user.iconImageUrl }} style={styles.avatar} />
         <View style={styles.userInfo}>
-          <Text style={[styles.userName, { color: colors.text }]}>{post.user.name}</Text>
-          <Text style={[styles.postTime, { color: colors.icon }]}>{formattedDateTime}</Text>
+          <Text style={[styles.userName, { color: colors.text }]}>
+            {post.user.name}
+          </Text>
+          <Text style={[styles.postTime, { color: colors.icon }]}>
+            {formattedDateTime}
+          </Text>
         </View>
       </View>
-      <Image source={{ uri: post.imageUrl }} style={[styles.image, { height: imageHeight }]} />
-      <Text style={[styles.caption, { color: colors.tint }]}>{post.caption}</Text>
+      <Image
+        source={{ uri: post.imageUrl }}
+        style={[styles.image, { height: imageHeight }]}
+      />
+      <Text style={[styles.caption, { color: colors.tint }]}>
+        {post.caption}
+      </Text>
     </View>
   );
 };
@@ -42,7 +58,7 @@ export const PostPanel = ({ post }: Props) => {
 const styles = StyleSheet.create({
   wrapper: {
     marginBottom: 24,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   header: {
     flexDirection: "row",

@@ -14,22 +14,11 @@ import {
 } from "react-native";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import z from "zod";
 import Constants from "expo-constants";
 import PetEditModal from "./PetEditModal";
+import { Pet } from "@/features/pet/schema";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
-
-export const petSchema = z.object({
-  id: z.string().uuid(),
-  imageUrl: z.string().min(1),
-  name: z.string().min(1),
-  type: z.enum(["dog", "cat"], { required_error: "種類は必須です" }),
-  species: z.string().min(1),
-  birthDay: z.string().min(1),
-});
-
-type Pet = z.infer<typeof petSchema>;
 
 type PetPanelProps = {
   pet: Pet;
@@ -41,10 +30,7 @@ const birthDayParser = (birthDay: string) => {
   return `${year}年${month}月${day}日`;
 };
 
-export const PetPanel: React.FC<PetPanelProps> = ({ 
-  pet,
-  colorScheme,
- }) => {
+export const PetPanel: React.FC<PetPanelProps> = ({ pet, colorScheme }) => {
   const windowHeight = Dimensions.get("window").height;
   const [menuVisible, setMenuVisible] = useState(false);
   const [isFullScreenVisible, setIsFullScreenVisible] = useState(false);
@@ -140,7 +126,10 @@ export const PetPanel: React.FC<PetPanelProps> = ({
             <TouchableOpacity onPress={handleDelete} style={styles.menuItem}>
               <Text>削除</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleOpenEditPetModal} style={styles.menuItem}>
+            <TouchableOpacity
+              onPress={handleOpenEditPetModal}
+              style={styles.menuItem}
+            >
               <Text>編集</Text>
             </TouchableOpacity>
           </View>

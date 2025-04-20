@@ -19,7 +19,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Constants from "expo-constants";
 import { z } from "zod";
-import { User } from "@/constants/api";
+import { User } from "@/features/user/schema";
 
 const API_URL = Constants.expoConfig?.extra?.API_URL;
 
@@ -188,9 +188,7 @@ export const ProfileEditModal: React.FC<ProfileEditModalProps> = ({
               placeholder="自己紹介"
               placeholderTextColor={colors.icon}
               value={formData.bio}
-              onChangeText={(value) =>
-                setFormData({ ...formData, bio: value })
-              }
+              onChangeText={(value) => setFormData({ ...formData, bio: value })}
               multiline
             />
             <TouchableOpacity

@@ -11,11 +11,13 @@ import { z } from "zod";
  * @returns バリデーション済みのレスポンス
  */
 export async function fetchApi<T>({
+  method,
   path,
   schema,
   options = {},
   token,
 }: {
+  method: "GET" | "POST" | "PUT" | "DELETE";
   path: string;
   schema: z.ZodType<T>;
   options: AxiosRequestConfig<any>;
@@ -28,7 +30,9 @@ export async function fetchApi<T>({
 
   const API_URL = new URL(path, BASE_URL).toString();
 
-  const response = await axios.get(API_URL, {
+  const response = await axios.request({
+    method,
+    url: API_URL,
     ...options,
     headers: {
       ...options.headers,

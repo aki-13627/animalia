@@ -2,10 +2,7 @@ import React from "react";
 import {
   View,
   Text,
-  TextInput,
-  Button,
   StyleSheet,
-  Alert,
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
@@ -18,8 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Colors } from "@/constants/Colors";
-import { useSignUp } from "@/constants/api";
 import { FormInput } from "@/components/FormInput";
+import { useSignUpScreen } from "@/features/auth/useSignUpScreen";
 
 const SignUpInputSchema = z.object({
   name: z.string(),
@@ -43,46 +40,13 @@ export default function SignUpScreen() {
     formState: { errors, isSubmitting },
   } = useForm<SignUpInput>({
     resolver: zodResolver(SignUpInputSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "", password: "", name: "" },
   });
   const router = useRouter();
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
 
-  const { mutate: signUp, isPending } = useSignUp();
-
-  const onSubmit = async (data: SignUpInput) => {
-    try {
-      await signUp(
-        { email: data.email, password: data.password, name: data.name },
-        {
-          onSuccess: () => {
-            Alert.alert("ユーザー登録が完了しました");
-            router.push({
-              pathname: "/(auth)/verify-email",
-              params: { email: data.email },
-            });
-          },
-          onError: (error: Error) => {
-            Alert.alert(
-              "サインアップエラー",
-              error.message || "ユーザーの登録に失敗しました"
-            );
-          },
-        }
-      );
-      // サインアップ成功後、verify-email 画面へ email をパラメータとして渡して遷移
-      router.push({
-        pathname: "/(auth)/verify-email",
-        params: { email: data.email },
-      });
-    } catch (error: any) {
-      Alert.alert(
-        "サインアップエラー",
-        error.message || "サインアップに失敗しました"
-      );
-    }
-  };
+  const { onSubmit, isPending } = useSignUpScreen();
 
   return (
     <ImageBackground
@@ -90,76 +54,80 @@ export default function SignUpScreen() {
       resizeMode="repeat"
       style={[styles.container, { backgroundColor: theme.background }]}
     >
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <View style={styles.formContainer}>
-          <Text style={[styles.title, { color: theme.text }]}>サインアップ</Text>
-          <Controller
-            control={control}
-            name="name"
-            render={({ field: { onChange, value } }) => (
-              <FormInput
-                label="Name"
-                value={value}
-                onChangeText={onChange}
-                theme={theme}
-                autoCapitalize="none"
-                error={errors.name?.message}
-              />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <Text style={[styles.title, { color: theme.text }]}>
+              サインアップ
+            </Text>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange, value } }) => (
+                <FormInput
+                  label="Name"
+                  value={value}
+                  onChangeText={onChange}
+                  theme={theme}
+                  autoCapitalize="none"
+                  error={errors.name?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, value } }) => (
+                <FormInput
+                  label="Email"
+                  value={value}
+                  onChangeText={onChange}
+                  theme={theme}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  error={errors.email?.message}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value } }) => (
+                <FormInput
+                  label="Password"
+                  value={value}
+                  onChangeText={onChange}
+                  theme={theme}
+                  secureTextEntry
+                  autoCapitalize="none"
+                  error={errors.password?.message}
+                />
+              )}
+            />
+            {isPending ? (
+              <ActivityIndicator size="large" color={theme.tint} />
+            ) : (
+              <TouchableOpacity
+                style={[styles.button, { borderColor: theme.tint }]}
+                onPress={handleSubmit(onSubmit)}
+                disabled={isSubmitting}
+              >
+                <Text style={[styles.buttonText, { color: theme.tint }]}>
+                  {isSubmitting ? "処理中..." : "サインアップ"}
+                </Text>
+              </TouchableOpacity>
             )}
-          />
-          <Controller
-            control={control}
-            name="email"
-            render={({ field: { onChange, value } }) => (
-              <FormInput
-                label="Email"
-                value={value}
-                onChangeText={onChange}
-                theme={theme}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                error={errors.email?.message}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="password"
-            render={({ field: { onChange, value } }) => (
-              <FormInput
-                label="Password"
-                value={value}
-                onChangeText={onChange}
-                theme={theme}
-                secureTextEntry
-                autoCapitalize="none"
-                error={errors.password?.message}
-              />
-            )}
-          />
-          {isPending ? (
-            <ActivityIndicator size="large" color={theme.tint} />
-          ) : (
             <TouchableOpacity
-              style={[styles.button, { borderColor: theme.tint }]}
-              onPress={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
+              style={[styles.button, { backgroundColor: theme.tint }]}
+              onPress={() => router.push("/")}
             >
-              <Text style={[styles.buttonText, { color: theme.tint }]}>
-                {isSubmitting ? "処理中..." : "サインアップ"}
+              <Text style={[styles.buttonText, { color: theme.background }]}>
+                戻る
               </Text>
             </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: theme.tint }]}
-            onPress={() => router.push("/")}
-          >
-            <Text style={[styles.buttonText, { color: theme.background }]}>戻る</Text>
-          </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
     </ImageBackground>
   );
 }

@@ -44,11 +44,8 @@ func main() {
 	if env == "" {
 		env = "development" // デフォルト値として development を設定
 	}
-	if env == "production" {
-		app.Logger.SetLevel(2)
-	} else {
-		app.Logger.SetLevel(1)
-	}
+
+	app.Logger.SetLevel(1)
 
 	isSeed := os.Getenv("SEED")
 	if isSeed == "true" {

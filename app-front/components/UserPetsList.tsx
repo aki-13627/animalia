@@ -7,8 +7,8 @@ import {
   useColorScheme,
 } from "react-native";
 import PetPanel from "@/components/PetPanel";
-import { Pet } from "@/constants/api";
 import { Colors } from "@/constants/Colors";
+import { Pet } from "@/features/pet/schema";
 
 type Props = {
   pets: Pet[];
@@ -60,7 +60,9 @@ export const UserPetList: React.FC<Props> = ({
         paddingBottom: 20,
       }}
       ListEmptyComponent={
-        <Text style={{ color: colors.text, textAlign: "center", marginTop: 32 }}>
+        <Text
+          style={{ color: colors.text, textAlign: "center", marginTop: 32 }}
+        >
           マイペットを登録しましょう！
         </Text>
       }
