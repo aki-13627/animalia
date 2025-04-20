@@ -10,35 +10,12 @@ import {
   NativeScrollEvent,
   FlatList,
 } from "react-native";
-import axios from "axios";
-import { z } from "zod";
-import { useQuery } from "@tanstack/react-query";
-import Constants from "expo-constants";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { PostPanel } from "@/components/PostPanel";
 import { Colors } from "@/constants/Colors";
 import { useHomeTabHandler } from "@/providers/HomeTabScrollContext";
-
-const API_URL = Constants.expoConfig?.extra?.API_URL;
-
-const userBaseSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  iconImageUrl: z.string().url(),
-});
-
-export const postSchema = z.object({
-  id: z.string().uuid(),
-  caption: z.string().min(0),
-  imageUrl: z.string().min(1),
-  user: userBaseSchema,
-  createdAt: z.string().datetime(),
-});
-
-export const getPostResponseSchema = z.object({
-  posts: z.array(postSchema),
-});
+import { usePostsScreen } from "@/features/post/usePostsScreen";
 
 export default function PostsScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -53,18 +30,7 @@ export default function PostsScreen() {
       ? require("../../assets/images/icon-green.png")
       : require("../../assets/images/icon-dark.png");
 
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["posts"],
-    queryFn: async () => {
-      const response = await axios.get(`${API_URL}/posts/`);
-      const result = getPostResponseSchema.safeParse(response.data);
-      if (result.error) {
-        console.error(result.error);
-        throw new Error(`error: ${result.error}`);
-      }
-      return result.data.posts;
-    },
-  });
+  const { data, isLoading, error, refetch } = usePostsScreen();
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     scrollYRef.current = event.nativeEvent.contentOffset.y;

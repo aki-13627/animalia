@@ -43,7 +43,7 @@ const ProfileScreen: React.FC = () => {
 
   const slideAnimProfile = useRef(new Animated.Value(windowWidth)).current;
   const slideAnimPet = useRef(new Animated.Value(windowWidth)).current;
-  const backgroundColor = colorScheme == "light" ? "white" : "black";
+  const backgroundColor = colorScheme === "light" ? "white" : "black";
 
   const scrollY = useRef(new Animated.Value(0)).current;
   const HEADER_THRESHOLD = 150;
@@ -106,7 +106,7 @@ const ProfileScreen: React.FC = () => {
   }
 
   const headerContent = (
-    <View style={{backgroundColor}}>
+    <View style={{ backgroundColor }}>
       <ProfileHeader user={user} onLogout={handleLogout} />
       <View style={[styles.editButtonsContainer]}>
         <TouchableOpacity

@@ -8,12 +8,13 @@ import (
 // SetupPostRoutes sets up the post routes
 func SetupPostRoutes(app *echo.Echo) {
 	postHandler := injector.InjectPostHandler()
-	postGroup := app.Group("/posts")
+	authMiddleware := injector.InjectAuthMiddleware()
+	postGroup := app.Group("/posts", authMiddleware.Handler)
 
 	// Get all posts
-	postGroup.GET("/", postHandler.GetAllPosts)
+	postGroup.GET("", postHandler.GetAllPosts)
 
 	// Create a new post
-	postGroup.POST("/", postHandler.CreatePost)
+	postGroup.POST("", postHandler.CreatePost)
 
 }

@@ -13,12 +13,11 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { API_URL } from "@/app/_layout";
 import { z } from "zod";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/providers/AuthContext";
 import { useRouter } from "expo-router";
+import { fetchApi } from "@/utils/api";
 
 type Props = {
   photoUri: string;
@@ -36,7 +35,7 @@ type PostForm = z.infer<typeof postInputSchema>;
 export function CreatePostModal({ photoUri, onClose }: Props) {
   const router = useRouter();
 
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const initialFormState = {
     imageUri: photoUri,
     caption: "",
@@ -47,8 +46,14 @@ export function CreatePostModal({ photoUri, onClose }: Props) {
 
   const createPostMutation = useMutation({
     mutationFn: (data: FormData) => {
-      return axios.post(`${API_URL}/posts/`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
+      return fetchApi({
+        method: "POST",
+        path: "posts",
+        schema: z.void(),
+        options: {
+          data,
+        },
+        token,
       });
     },
     onSuccess: () => {

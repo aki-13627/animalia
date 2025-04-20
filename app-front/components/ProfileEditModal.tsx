@@ -16,12 +16,10 @@ import {
 import { Colors } from "@/constants/Colors";
 import * as ImagePicker from "expo-image-picker";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import Constants from "expo-constants";
 import { z } from "zod";
-import { User } from "@/constants/api";
-
-const API_URL = Constants.expoConfig?.extra?.API_URL;
+import { fetchApi } from "@/utils/api";
+import { useAuth } from "@/providers/AuthContext";
+import { User } from "@/features/auth/schema";
 
 export const profileEditSchema = z.object({
   imageUri: z.string().nullable(),
@@ -53,6 +51,7 @@ export const ProfileEditModal: React.FC<ProfileEditModalProps> = ({
   refetchUser,
   user,
 }) => {
+  const { token } = useAuth();
   const colors = colorScheme === "light" ? Colors.light : Colors.dark;
   const [formData, setFormData] = useState<ProfileEditForm>(
     getInitialProfileState(user)
@@ -81,8 +80,12 @@ export const ProfileEditModal: React.FC<ProfileEditModalProps> = ({
   // API でプロフィール更新を行うための Mutation
   const updateProfileMutation = useMutation({
     mutationFn: (data: FormData) => {
-      return axios.put(`${API_URL}/users/update?id=${user.id}`, data, {
-        headers: { "Content-Type": "multipart/form-data" },
+      return fetchApi({
+        method: "PUT",
+        path: `users/update?id=${user.id}`,
+        schema: z.void(),
+        options: { data, headers: { "Content-Type": "multipart/form-data" } },
+        token,
       });
     },
   });
@@ -188,9 +191,7 @@ export const ProfileEditModal: React.FC<ProfileEditModalProps> = ({
               placeholder="自己紹介"
               placeholderTextColor={colors.icon}
               value={formData.bio}
-              onChangeText={(value) =>
-                setFormData({ ...formData, bio: value })
-              }
+              onChangeText={(value) => setFormData({ ...formData, bio: value })}
               multiline
             />
             <TouchableOpacity

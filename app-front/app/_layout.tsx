@@ -8,7 +8,7 @@ import { Slot, usePathname, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { ActivityIndicator, View, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -42,7 +42,7 @@ function AuthSwitch() {
         router.replace("/(auth)");
       }
     }
-  }, [loading, user, router]);
+  }, [loading, user, router, pathname]);
 
   if (loading) {
     return (
@@ -85,13 +85,13 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-      <HomeTabScrollProvider>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <AuthSwitch />
-          <StatusBar style="auto" />
-        </ThemeProvider>
+        <HomeTabScrollProvider>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <AuthSwitch />
+            <StatusBar style="auto" />
+          </ThemeProvider>
         </HomeTabScrollProvider>
       </AuthProvider>
     </QueryClientProvider>

@@ -31,6 +31,7 @@ type UserResponse struct {
 func NewUserResponse(user *ent.User, imageURL string, posts []PostResponse, pets []PetResponse) UserResponse {
 	return UserResponse{
 		ID:           user.ID,
+		Email:        user.Email,
 		Name:         user.Name,
 		Bio:          user.Bio,
 		IconImageUrl: imageURL,
