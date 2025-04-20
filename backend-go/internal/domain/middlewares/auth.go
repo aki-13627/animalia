@@ -31,7 +31,7 @@ func (m *AuthMiddleware) Handler(next echo.HandlerFunc) echo.HandlerFunc {
 
 		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 		if tokenString == "" {
-			log.Error("Failed to get user email: token is empty")
+			log.Error("Failed to trim user token: token is empty")
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
 				"error": "アクセストークンが必要です",
 			})
@@ -39,7 +39,7 @@ func (m *AuthMiddleware) Handler(next echo.HandlerFunc) echo.HandlerFunc {
 
 		email, err := m.authUsecase.GetUserEmail(tokenString)
 		if err != nil {
-			log.Errorf("Failed to get user email: %v", err)
+			log.Errorf("Failed to get user email from token: %v", err)
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
 				"error": "無効なアクセストークンです",
 			})

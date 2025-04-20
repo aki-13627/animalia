@@ -12,9 +12,9 @@ func SetupPostRoutes(app *echo.Echo) {
 	postGroup := app.Group("/posts", authMiddleware.Handler)
 
 	// Get all posts
-	postGroup.GET("/", postHandler.GetAllPosts)
+	postGroup.GET("", postHandler.GetAllPosts)
 
 	// Create a new post
-	postGroup.POST("/", postHandler.CreatePost)
+	postGroup.POST("", postHandler.CreatePost)
 
 }
